@@ -25,9 +25,6 @@ void loop ()
 {
   Joystick.hat(-1); // for some reason I had a hat input, setting -1 "resets" the hat
   // these next two handle potentiometers they have to be on analog buttons
-  Joystick.sliderLeft(analogRead(7));
-  Joystick.sliderRight(analogRead(8));
-
   for (int t = 0; t < NUM_TOGGLES; t++)
   { // loop through the toggle switches and assigning them below to a joystick buttin starting at 1
     toggles[t].update(); // check if their state (on/off) has changed
