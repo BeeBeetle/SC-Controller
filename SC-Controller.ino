@@ -1,7 +1,7 @@
 #include <Bounce2.h>
 // momentary buttons go here change the 0 to the number of buttons you use
-constexpr int NUM_BUTTONS = 5; // the number of moment buttons on the controller
-int buttons[NUM_BUTTONS] = {2,3,4,5,6}; // an array with the buttons in it
+constexpr int NUM_BUTTONS = 22; // the number of moment buttons on the controller
+int buttons[NUM_BUTTONS] = {2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23}; // an array with the buttons in it
 // toggle switches or latching buttons go here, anything that you don't press and hold to close
 constexpr int NUM_TOGGLES = 2; // the number of toggle switches I'm using
 constexpr int BOUNCE_INTER = 10; // the ms delay over which the bounce is checked
