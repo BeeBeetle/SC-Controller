@@ -1,5 +1,5 @@
 // Welcome to my joystick code, I hope my notes are comprehensible
-// To start off a in Windows 10 (as far as I can tell) a joystick is limited to the following:
+// To start off, in Windows 10 (as far as I can tell) a joystick is limited to the following:
 // 1. Three axes of motion (for an actual stick) X, Y, and Z
 // 2. Thirty-two buttons
 // 3. One hat (imagine a d-pad or thumbstick from a playstation controller)
@@ -12,16 +12,16 @@
 
 // below will be what is essentially an accounting of all the pins we are using on the teensy excluding potentiometers
 // right now there are no actual joysticks or hats, if I decide to add one that will be coming at a later time and may or may not be tracked here
-constexpr int BUTTON_PINS = 3; // the number of momentary buttons used on the teensy
+constexpr int BUTTON_PINS = 10; // the number of momentary buttons used on the teensy
 // an array with the pin numbers in it: the order of the pin numbers is the button assignment order
 // so the first listed pin will be joystick button 1, then 2, 3, and so on
-int pins[BUTTON_PINS] = {3,8,9}; // use the numbers for the pins you have momentary buttons on
+int pins[BUTTON_PINS] = {8,9,10,11,12,13,14,15,16,17}; // use the numbers for the pins you have momentary buttons on
 // toggle switches or latching buttons go here, anything that you don't press and hold i.e. constant input items (non-momentary)
-constexpr int TOGGLE_PINS = 3; // the number of toggle switches I'm using
-int toggles[TOGGLE_PINS] = {2,6,7}; // list the pin numbers for all your toggle switches AND LATCHING BUTTONS (they have to be treated the same)
-// it is very important that the number of entries in the two array's below matches matches the number for TOGGLE_PINS above, otherwise you will miss buttons or be out of bounds
-int toggleState[] = {0,0,0}; // this will be used later to track the current state of our toggled things
-int lastToggleState[] = {0,0,0}; // same as above but to compare with the current state
+constexpr int TOGGLE_PINS = 12; // the number of toggle switches I'm using
+int toggles[TOGGLE_PINS] = {0,1,2,3,4,5,6,7,18,19,20,21}; // list the pin numbers for all your toggle switches AND LATCHING BUTTONS (they have to be treated the same)
+// it is very important that the number of zeros in the two array's below matches matches the number for TOGGLE_PINS above, otherwise you will miss buttons or be out of bounds
+int toggleState[] = {0,0,0,0,0,0,0,0,0,0,0,0}; // this will be used later to track the current state of our toggled things
+int lastToggleState[] = {0,0,0,0,0,0,0,0,0,0,0,0}; // same as above but to compare with the current state
 
 void setup ()
 {
@@ -42,7 +42,8 @@ void loop ()
   Joystick.hat(-1); // for some reason I was getting hat input, setting -1 "resets" the hat, of course I may add a hat later!
 
   // this handles the potentiometers, you can only have 2 per joystick because we use the sliders for them
-  Joystick.sliderLeft(analogRead(20)); // use the actual pin number, not the "analog" number i.e A0 or A4 (this can be left or right doesn't matter)
+  Joystick.sliderRight(analogRead(22)); // use the actual pin number, not the "analog" number i.e A0 or A4 (this can be left or right doesn't matter)
+  Joystick.sliderLeft(analogRead(23));
 
   for (int t = 0; t < TOGGLE_PINS; t++)
   { // this is for our toggle switches, we only want them to trigger when they switch because games usually only take a single input (was a key pressed or not)
