@@ -1,15 +1,3 @@
-// Welcome to my joystick code, I hope my notes are comprehensible
-// To start off, in Windows 10 (as far as I can tell) a joystick is limited to the following:
-// 1. Three axes of motion (for an actual stick) X, Y, and Z
-// 2. Thirty-two buttons
-// 3. One hat (imagine a d-pad or thumbstick from a playstation controller)
-// 4. Two sliders (aka potentiometers of any kind)
-// Because of this if you wanted to have a dual joystick setup with fifty buttons and three potentiometers you would
-// need to have two teensy's working together that would register as two seperate joysticks.
-// It may be possible to convince Windows that one teensy's is actually two separate devices but I have not
-// investigated that. In fact it probably is possible somewhere in the joystick methods but if it is doable that
-// is an issue to be tackled later.
-
 // below will be what is essentially an accounting of all the pins we are using on the teensy excluding potentiometers
 // right now there are no actual joysticks or hats, if I decide to add one that will be coming at a later time and may or may not be tracked here
 constexpr int BUTTON_PINS = 10; // the number of momentary buttons used on the teensy
