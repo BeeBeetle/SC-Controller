@@ -8,6 +8,7 @@ To start off, in Windows 10 (as far as I can tell) a joystick is limited to the 
 
 Because of this if you wanted to have a dual joystick setup with fifty buttons and three potentiometers you would
 need to have two teensy's working together that would register as two seperate joysticks as a default.
-There are solutions to this that I am exploring, particularly https://forum.pjrc.com/index.php?threads/many-axis-joystick.23681/.
+There are solutions to this that I am exploring, particularly https://forum.pjrc.com/index.php?threads/many-axis-joystick.23681/ 
+and http://www.leobodnar.com/products/BU0836/.
 However more work is needed to determine how this works exactly, if Windows will be OK with the changes or
 if Windows wont care and it depends entirely on the program for which the devices is intended to be used.
