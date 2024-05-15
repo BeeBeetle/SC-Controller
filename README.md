@@ -1,6 +1,6 @@
 Welcome to my joystick code, I hope my notes are comprehensible.
 
-To start off, with a Teensy, by default, a joystick is limited to the following:
+To start, with a Teensy, by default, a joystick is limited to the following:
    1. Three axes of motion (for an actual stick) X, Y, and Z
    2. Thirty-two buttons
    3. One hat (imagine a d-pad or thumbstick from a playstation controller but 8 directions)
