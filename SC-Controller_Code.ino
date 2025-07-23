@@ -1,15 +1,15 @@
 // below will be what is essentially an accounting of all the pins we are using on the teensy excluding potentiometers
 // right now there are no actual joysticks or hats, if I decide to add one that will be coming at a later time and may or may not be tracked here
-constexpr int BUTTON_PINS = 10; // the number of momentary buttons used on the teensy
+constexpr int BUTTON_PINS = 13; // the number of momentary buttons used on the teensy
 // an array with the pin numbers in it: the order of the pin numbers is the button assignment order
 // so the first listed pin will be joystick button 1, then 2, 3, and so on
-int pins[BUTTON_PINS] = {10,11,12,13,14,15,16,17,18,19}; // use the numbers for the pins you have momentary buttons on
+int buttons[BUTTON_PINS] = {0,1,2,3,4,5,6,7,8,12,16,17,18}; // use the numbers for the pins you have momentary buttons on
 // toggle switches or latching buttons go here, anything that you don't press and hold i.e. constant input items (non-momentary)
-constexpr int TOGGLE_PINS = 10; // the number of toggle switches I'm using
-int toggles[TOGGLE_PINS] = {0,1,2,3,4,5,6,7,8,9}; // list the pin numbers for all your toggle switches AND LATCHING BUTTONS (they have to be treated the same)
+constexpr int TOGGLE_PINS = 6; // the number of toggle switches I'm using
+int toggles[TOGGLE_PINS] = {9,10,11,19,20,21}; // list the pin numbers for all your toggle switches AND LATCHING BUTTONS (they have to be treated the same)
 // it is very important that the number of zeros in the two array's below matches matches the number for TOGGLE_PINS above, otherwise you will miss buttons or be out of bounds
-int toggleState[] = {0,0,0,0,0,0,0,0,0,0}; // this will be used later to track the current state of our toggled things
-int lastToggleState[] = {0,0,0,0,0,0,0,0,0,0}; // same as above but to compare with the current state
+int toggleState[] = {0,0,0,0,0,0}; // this will be used later to track the current state of our toggled things
+int lastToggleState[] = {0,0,0,0,0,0}; // same as above but to compare with the current state
 // the deadzone gives us a range for which the joystick (or thumbstick) will report neutral input (centered) in the code for reading the analog pins
 int deadzone = 20;
 int xval;
@@ -24,7 +24,7 @@ void setup ()
   }
   for (int b = 0; b < BUTTON_PINS; b++) // as above but loops through the buttons this time
   { // right now assumes the pins are assigned sequentially on the teensy so that the lowest pin numbers will be toggle swtiches
-    pinMode(pins[b], INPUT_PULLUP); // same as above for buttons
+    pinMode(buttons[b], INPUT_PULLUP); // same as above for buttons
   }
   // we don't need to add anything here for potentiometers
 }
@@ -37,27 +37,25 @@ void loop ()
   // by default a joystick device only has two sliders
   Joystick.sliderRight(analogRead(22)); 
   Joystick.sliderLeft(analogRead(23));
+  Joystick.Y(511);
+  Joystick.X(511);
 
-  // the code below lets us implement the deadzone for the joystick as well as setting the pins
+  // the code below lets us implement the deadzone for a joystick as well as setting the pins
   // the pots in the thumbstick (in this case) output a reading from 0-1023 making the middle (zero user input) 511
-  xval = analogRead(21); // it is important that the pins here use the actual pin number (like the sliders)
-  yval = analogRead(20); // we are setting the pins with a variable so if the wiring changes we change the number in one place only
-  if ((xval > (511 - deadzone)) && (xval < (511 + deadzone))) // checks to see if the input falls in the deadzone (set at the start) of +- 40 with 511 being the middle
-  { // you want a deadzone so that unintentionally bumping the controller or thumbstick does not give an output
-    Joystick.X(511); // our "no input" value
-  }
-  else
-  {
-    Joystick.X(xval); // the actual reading should it be outside the deadzone
-  }
-  if ((yval > (511 - deadzone)) && (yval < (511 + deadzone))) // same as above but for the Y axis
-  {
-    Joystick.Y(511);
-  }
-  else
-  {
-    Joystick.Y(yval);
-  }
+  // xval = analogRead(21);                                       // it is important that the pins here use the actual pin number (like the sliders)
+  // yval = analogRead(20);                                       // we are setting the pins with a variable so if the wiring changes we change the number in one place only
+  // if ((xval > (511 - deadzone)) && (xval < (511 + deadzone)))  // checks to see if the input falls in the deadzone (set at the start) of +-20 with 511 being the middle
+  // {                                                            // you want a deadzone so that unintentionally bumping the controller or thumbstick does not give an output
+  //   Joystick.X(511);                                           // our "no input" value
+  // } else {
+  //   Joystick.X(xval);  // the actual reading should it be outside the deadzone
+  // }
+  // if ((yval > (511 - deadzone)) && (yval < (511 + deadzone)))  // same as above but for the Y axis
+  // {
+  //   Joystick.Y(511);
+  // } else {
+  //   Joystick.Y(yval);
+  // }
 
   for (int t = 0; t < TOGGLE_PINS; t++)
   { // this is for our toggle switches, we only want them to trigger when they switch because games usually only take a single input (was a key pressed or not)
@@ -69,14 +67,11 @@ void loop ()
       if (toggleState[t] == HIGH)
       {
         Joystick.button(t+1, 1);
-        delay(50);
       }
       else if (toggleState[t] == LOW)
       {
         Joystick.button(t+1, 1);
-        delay(50);
       }
-      delay(50);
     }
     // we want to make sure the states are updated so that it doesn't give output anymore after the initial flip
     lastToggleState[t] = toggleState[t];
@@ -85,14 +80,11 @@ void loop ()
       if (toggleState[t] == HIGH)
       {
         Joystick.button(t+1, 0);
-        delay(50);
       }
       else if (toggleState[t] == LOW)
       {
         Joystick.button(t+1, 0);
-        delay(50);
-      }   
-      delay(50);
+      }
     }
   }
 
@@ -100,16 +92,14 @@ void loop ()
   for (int b = 0; b < BUTTON_PINS; b++) // cycle through all our buttons
   { // same as before with the high low, but this time since we aren't tracking a state change if the button is held we get constant output
     // which is, of course, fine because anything tracked here MUST be a momentary button
-    if (digitalRead(pins[b]) == LOW)
-    { // the reason to add an additional 1 here beyond the toggles is because the Arduino IDE doesn't like b=1; b <= PIN_NUMBERS      
-      // and with the 1 we ensure that the button assignment STARTS at 1 (the lowest on the joystick) and then we add the toggles
-      // so with 5 toggles the first button would be on 6
-      Joystick.button(b+1+TOGGLE_PINS, 1);
-    }
-    else
+    buttonState[b] = digitalRead(buttons[b]);
+    if (buttonState[b] == HIGH)
     {
       Joystick.button(b+1+TOGGLE_PINS, 0);
     }
-  } 
-  delay(50); // a nice bit of delay just for fun
+    else if (buttonState[b] == LOW)
+    {
+      Joystick.button(b+1+TOGGLE_PINS, 1);
+    }
+  }
 }
