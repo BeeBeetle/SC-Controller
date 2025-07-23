@@ -67,10 +67,12 @@ void loop ()
       if (toggleState[t] == HIGH)
       {
         Joystick.button(t+1, 1);
+        delay(50);
       }
       else if (toggleState[t] == LOW)
       {
         Joystick.button(t+1, 1);
+        delay(50);
       }
     }
     // we want to make sure the states are updated so that it doesn't give output anymore after the initial flip
