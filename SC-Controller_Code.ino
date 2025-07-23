@@ -92,14 +92,13 @@ void loop ()
   for (int b = 0; b < BUTTON_PINS; b++) // cycle through all our buttons
   { // same as before with the high low, but this time since we aren't tracking a state change if the button is held we get constant output
     // which is, of course, fine because anything tracked here MUST be a momentary button
-    buttonState[b] = digitalRead(buttons[b]);
-    if (buttonState[b] == HIGH)
-    {
-      Joystick.button(b+1+TOGGLE_PINS, 0);
-    }
-    else if (buttonState[b] == LOW)
+    if (digitalRead(buttons[b]) == LOW)
     {
       Joystick.button(b+1+TOGGLE_PINS, 1);
+    }
+    else
+    {
+      Joystick.button(b+1+TOGGLE_PINS, 0);
     }
   }
 }
